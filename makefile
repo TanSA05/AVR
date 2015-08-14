@@ -1,7 +1,19 @@
-all:
-	avr-gcc -mmcu=atmega328p -Os -o blink.o blinkled.c
-	avr-objcopy -O ihex blink.o blink.hex
-download:
-	avrdude -p m328p -c arduino -b 57600 -P /dev/ttyUSB0 -U flash:w:blink.hex
+CC = gcc
+BlinkO = blink.o
+BlinkC = blinkled.c
+BlinkH = blink.hex
+Processor = m328p
+Baud = 57600
+Port = /dev/ttyUSB0
+Upload = flash:w:blink.hex
+
+
+compile:
+	avr-$(CC) -mmcu=atmega328p -Os -o $(BlinkO) (BlinkLed)
+	avr-objcopy -O ihex $(BlinkC) $(BlinkH)
+
+program:
+	avrdude -p ($Processor) -c arduino -b $(Baud) -P ($port) -U ($Upload)
+
 clean:
 	rm *.hex *.o
